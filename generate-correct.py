@@ -48,7 +48,8 @@ except:
     print('Unable to open words.txt; please download a wordlist and put it in ./words.txt.')
     print('Such a word list is available on GitHub: https://github.com/dwyl/english-words/blob/master/words.txt')
 
-    exit(1)
+    # exit(1)
+    wordslist = 'foo\nbar\nbaz\nblue'
 
 words = wordslist.splitlines()
 
@@ -84,7 +85,7 @@ r_tmp  = 'r12'
 # Code
 # ====
 
-with open('src/correct.S', 'w') as f:
+with open('correctt.S', 'w') as f:
     f.write('''
     .intel_syntax noprefix
 

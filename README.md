@@ -33,3 +33,56 @@ The automaton is still very dumb though, so don't expect magical things from it.
 
 I'm mostly publishing it online because I had fun making it, and I think it was
 an interesting exercise.
+
+## Assembly code
+
+Here is a snippet of code when the words `bar` and `baz` are part of the dictionary.
+
+```assembly
+.S3:     # 'ba'
+
+  # This is not a complete word, so we simply try to move on to the next character.
+  mov     r11b, BYTE PTR [rdi+r8]
+
+  # Cancel if the end of the input has been reached.
+  cmp     r11b, 0
+  je      .inputend
+
+  # Try to match 'ba' + 'r', and save 'bar' if it works (or if the distance is
+  # below the given threshold).
+  stpush  .S6, 'r'
+
+  # Same with 'ba' + 'z'.
+  stpush  .S7, 'z'
+
+  # Move on to next possibility.
+  jmp     .stpop
+
+
+.S6:     # 'bar'
+
+  # Test if the end has been reached, which means our input word matches 'bar'.
+  wordend Wbar, 3
+
+  mov     r11b, BYTE PTR [rdi+r8]
+
+  # Cancel if the end of the input has been reached.
+  cmp     r11b, 0
+  je      .inputend
+
+  # Move on to next possibility.
+  jmp     .stpop
+
+
+.S7:     # 'baz'
+
+  # Same as above.
+  wordend Wbaz, 3
+
+  mov     r11b, BYTE PTR [rdi+r8]
+
+  cmp     r11b, 0
+  je      .inputend
+
+  jmp     .stpop
+```
